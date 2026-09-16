@@ -14,7 +14,6 @@
       --card-bg: #FFFFFF;
       --text-color: #1F2937;
     }
-
     body {
       font-family: 'Helvetica Neue', Arial, sans-serif;
       background-color: var(--bg-color);
@@ -24,7 +23,6 @@
       display: flex;
       justify-content: center;
     }
-
     .container {
       width: 100%;
       max-width: 600px;
@@ -33,11 +31,9 @@
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-
     h1, h2, h3 { text-align: center; color: #111827; margin-top: 0; }
     .screen { display: none; }
     .active { display: block; }
-
     input[type="text"], select {
       width: 100%;
       padding: 12px;
@@ -48,7 +44,6 @@
       font-size: 16px;
       background-color: #FFF;
     }
-
     button {
       width: 100%;
       padding: 12px;
@@ -62,15 +57,12 @@
       margin-top: 10px;
       transition: background 0.2s;
     }
-
     button:hover { opacity: 0.9; }
     button:disabled { background-color: #9CA3AF; cursor: not-allowed; }
-
     .btn-secondary {
       background-color: #6B7280;
       margin-top: 5px;
     }
-
     /* レベル選択のグリッド配置 */
     .level-grid {
       display: grid;
@@ -78,7 +70,6 @@
       gap: 12px;
       margin-bottom: 25px;
     }
-
     .level-card {
       border: 2px solid #E5E7EB;
       padding: 15px;
@@ -86,17 +77,14 @@
       text-align: center;
       background: #F9FAFB;
     }
-
     .level-card.unlocked {
       border-color: var(--primary-color);
       background: #EFF6FF;
     }
-
     .level-card.cleared {
       border-color: var(--success-color);
       background: #ECFDF5;
     }
-
     /* クイズ画面 */
     .quiz-header {
       display: flex;
@@ -105,7 +93,6 @@
       font-size: 14px;
       color: #6B7280;
     }
-
     .word-card {
       background: #F3F4F6;
       padding: 30px;
@@ -113,15 +100,12 @@
       border-radius: 8px;
       margin-bottom: 20px;
     }
-
     .word { font-size: 32px; font-weight: bold; color: #1D4ED8; }
-
     .choices-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 10px;
     }
-
     .choice-btn {
       background-color: #FFF;
       color: #374151;
@@ -130,7 +114,6 @@
       font-size: 16px;
       text-align: left;
     }
-
     .choice-btn:hover:not(:disabled) { background-color: #F9FAFB; }
     .choice-btn.correct { background-color: var(--success-color) !important; color: white; border-color: var(--success-color); }
     .choice-btn.wrong { background-color: var(--danger-color) !important; color: white; border-color: var(--danger-color); }
@@ -141,34 +124,28 @@
       border-top: 2px solid #E5E7EB;
       padding-top: 20px;
     }
-
     .history-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
       font-size: 14px;
     }
-
     .history-table th, .history-table td {
       border: 1px solid #E5E7EB;
       padding: 8px 12px;
       text-align: center;
     }
-
     .history-table th {
       background-color: #F9FAFB;
       color: #4B5563;
     }
-
     .chart-container { margin-top: 25px; }
-
     .header-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 15px;
     }
-
     .switch-user-btn {
       width: auto;
       padding: 6px 12px;
@@ -179,397 +156,434 @@
   </style>
 </head>
 <body>
-
-<div class="container">
-  
-  <div id="screen-login" class="screen active">
-    <h1>英単語100攻略マスター</h1>
-    <p style="text-align: center; color: #4B5563;">10問×10レベルで100語を完全制覇！</p>
-    
-    <div id="user-select-area" style="display: none; margin-bottom: 20px;">
-      <label for="user-select">登録済みの学習者を選ぶ：</label>
-      <select id="user-select" onchange="selectExistingUser()"></select>
-      <button onclick="loginSelectedUser()">選んだ名前で学習をはじめる</button>
-      <div style="text-align: center; margin: 15px 0; color: #9CA3AF;">― または ―</div>
+  <div class="container">
+    <!-- ログイン画面 -->
+    <div id="screen-login" class="screen active">
+      <h1>英単語100攻略マスター</h1>
+      <p style="text-align: center; color: #4B5563;">10問×10レベルで100語を完全制覇！</p>
+      <div id="user-select-area" style="display: none; margin-bottom: 20px;">
+        <label for="user-select">登録済みの学習者を選ぶ：</label>
+        <select id="user-select" onchange="selectExistingUser()"></select>
+        <button onclick="loginSelectedUser()">選んだ名前で学習をはじめる</button>
+        <div style="text-align: center; margin: 15px 0; color: #9CA3AF;">― または ―</div>
+      </div>
+      <label for="username">新しい名前を追加する：</label>
+      <input type="text" id="username" placeholder="例: たろう">
+      <button onclick="loginNewUser()">新しい名前で登録</button>
     </div>
 
-    <label for="username">新しい名前を追加する：</label>
-    <input type="text" id="username" placeholder="例: たろう">
-    <button onclick="loginNewUser()">新しい名前で登録</button>
-  </div>
+    <!-- ダッシュボード画面 -->
+    <div id="screen-dashboard" class="screen">
+      <div class="header-bar">
+        <span>挑戦中: <strong id="display-name" style="font-size: 18px; color: var(--primary-color);"></strong> さん</span>
+        <button class="switch-user-btn" onclick="logout()">人を変える</button>
+      </div>
+      <p style="text-align: center; font-size: 14px; color: #4B5563;">全問正解（100%）で 次のレベルが解放されます</p>
+      <div class="level-grid" id="level-grid"></div>
 
-  <div id="screen-dashboard" class="screen">
-    <div class="header-bar">
-      <span>挑戦中: <strong id="display-name" style="font-size: 18px; color: var(--primary-color);"></strong> さん</span>
-      <button class="switch-user-btn" onclick="logout()">人を変える</button>
-    </div>
+      <div class="chart-container">
+        <h3>日々の正解率推移</h3>
+        <canvas id="progressChart"></canvas>
+      </div>
 
-    <p style="text-align: center; font-size: 14px; color: #4B5563;">全問正解（100%）で次のレベルが解放されます</p>
-    
-    <div class="level-grid" id="level-grid"></div>
-
-    <div class="chart-container">
-      <h3>日々の正解率推移</h3>
-      <canvas id="progressChart"></canvas>
-    </div>
-
-    <div class="history-section">
-      <h3>挑戦の記録（数字ログ）</h3>
-      <div style="max-height: 200px; overflow-y: auto;">
-        <table class="history-table">
-          <thead>
-            <tr>
-              <th>日時</th>
-              <th>レベル</th>
-              <th>正解数</th>
-              <th>正解率</th>
-            </tr>
-          </thead>
-          <tbody id="history-log-body"></tbody>
-        </table>
+      <div class="history-section">
+        <h3>挑戦の記録（数字ログ）</h3>
+        <div style="max-height: 200px; overflow-y: auto;">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>日時</th>
+                <th>レベル</th>
+                <th>正解数</th>
+                <th>正解率</th>
+                <th>所要時間</th>
+              </tr>
+            </thead>
+            <tbody id="history-log-body"></tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="screen-quiz" class="screen">
-    <div class="quiz-header">
-      <span id="quiz-level-title">Level 1</span>
-      <span>問題: <span id="current-index">1</span> / 10</span>
+    <!-- クイズ画面 -->
+    <div id="screen-quiz" class="screen">
+      <div class="quiz-header">
+        <span id="quiz-level-title">Level 1</span>
+        <span style="font-size: 13px; color: #4B5563;">⏱️ <span id="quiz-timer">00:00</span></span>
+        <span>問題: <span id="current-index">1</span> / 10</span>
+      </div>
+      <div class="word-card">
+        <div class="word" id="target-word">---</div>
+      </div>
+      <div class="choices-grid" id="choices-container"></div>
     </div>
 
-    <div class="word-card">
-      <div class="word" id="target-word">---</div>
+    <!-- 結果画面 -->
+    <div id="screen-result" class="screen">
+      <h2>結果発表</h2>
+      <div class="word-card">
+        <p>正解数</p>
+        <div class="word"><span id="score">0</span> / 10</div>
+        <p>正解率: <span id="accuracy">0</span>%</p>
+        <p style="margin-top: 10px; color: #4B5563; font-size: 14px;">⏱️ 所要時間: <span id="result-time" style="font-weight: bold; color: var(--text-color);">00:00</span></p>
+      </div>
+      <div id="unlock-msg" style="font-weight: bold; text-align: center; margin: 15px 0; font-size: 18px;"></div>
+      <button onclick="showDashboard()">レベル選択に戻る</button>
     </div>
-
-    <div class="choices-grid" id="choices-container"></div>
   </div>
 
-  <div id="screen-result" class="screen">
-    <h2>結果発表</h2>
-    <div class="word-card">
-      <p>正解数</p>
-      <div class="word"><span id="score">0</span> / 10</div>
-      <p>正解率: <span id="accuracy">0</span>%</p>
-    </div>
-    <div id="unlock-msg" style="font-weight: bold; text-align: center; margin: 15px 0; font-size: 18px;"></div>
-    <button onclick="showDashboard()">レベル選択に戻る</button>
-  </div>
+  <script>
+    // 単語データベース (100問)
+    const wordDatabase = {
+      1: [
+        { word: "environment", choices: ["環境", "経験", "設備", "状況"], answer: 0 },
+        { word: "influence", choices: ["影響（を与える）", "印象", "指示", "関心"], answer: 0 },
+        { word: "convenient", choices: ["便利な", "複雑な", "適切な", "快適な"], answer: 0 },
+        { word: "government", choices: ["政府・政治", "社会", "経済", "地理"], answer: 0 },
+        { word: "tradition", choices: ["伝統", "貿易", "旅行", "技術"], answer: 0 },
+        { word: "opportunity", choices: ["機会・チャンス", "意見", "目的", "反対"], answer: 0 },
+        { word: "description", choices: ["描写・説明", "発見", "決定", "方向"], answer: 0 },
+        { word: "advantage", choices: ["利点・強み", "不便", "冒険", "平均"], answer: 0 },
+        { word: "disaster", choices: ["災害・惨事", "発見", "討論", "距離"], answer: 0 },
+        { word: "volunteering", choices: ["ボランティア活動", "価値", "理解", "投票"], answer: 0 }
+      ],
+      2: [
+        { word: "population", choices: ["人口", "汚染", "人気", "位置"], answer: 0 },
+        { word: "destination", choices: ["目的地", "決断", "デザイン", "距離"], answer: 0 },
+        { word: "atmosphere", choices: ["大気・雰囲気", "態度", "原子", "属性"], answer: 0 },
+        { word: "relationship", choices: ["関係・間柄", "宗教", "地域", "責任"], answer: 0 },
+        { word: "perspective", choices: ["視点・考え方", "所有", "許可", "目的"], answer: 0 },
+        { word: "communication", choices: ["意思疎通", "コミュニティ", "比較", "完成"], answer: 0 },
+        { word: "contribution", choices: ["貢献・寄付", "条件", "建設", "会話"], answer: 0 },
+        { word: "biodiversity", choices: ["生物の多様性", "伝記", "生化学", "境界"], answer: 0 },
+        { word: "sustainability", choices: ["持続可能性", "成功", "解決策", "支持"], answer: 0 },
+        { word: "international", choices: ["国際的な", "内部の", "知的な", "熱心な"], answer: 0 }
+      ],
+      3: [
+        { word: "achievement", choices: ["達成・実績", "受容", "事故", "行動"], answer: 0 },
+        { word: "announcement", choices: ["発表・告知", "案内", "許可", "配置"], answer: 0 },
+        { word: "architecture", choices: ["建築・構造", "芸術", "農業", "協定"], answer: 0 },
+        { word: "celebration", choices: ["お祝い・儀式", "選択", "収集", "比較"], answer: 0 },
+        { word: "competition", choices: ["競争・コンテスト", "完成", "条件", "混乱"], answer: 0 },
+        { word: "conservation", choices: ["（自然などの）保護", "会話", "接続", "検討"], answer: 0 },
+        { word: "development", choices: ["開発・発展", "出発", "要求", "発見"], answer: 0 },
+        { word: "electricity", choices: ["電気", "電子", "要素", "教育"], answer: 0 },
+        { word: "entertainment", choices: ["娯楽・催し物", "入場", "環境", "装備"], answer: 0 },
+        { word: "exploration", choices: ["探検・調査", "説明", "表現", "経験"], answer: 0 }
+      ]
+    };
 
-</div>
-
-<script>
-  // 単語データベース (100問)
-  const wordDatabase = {
-    1: [
-      { word: "environment", choices: ["環境", "経験", "設備", "状況"], answer: 0 },
-      { word: "influence", choices: ["影響（を与える）", "印象", "指示", "関心"], answer: 0 },
-      { word: "convenient", choices: ["便利な", "複雑な", "適切な", "快適な"], answer: 0 },
-      { word: "government", choices: ["政府・政治", "社会", "経済", "地理"], answer: 0 },
-      { word: "tradition", choices: ["伝統", "貿易", "旅行", "技術"], answer: 0 },
-      { word: "opportunity", choices: ["機会・チャンス", "意見", "目的", "反対"], answer: 0 },
-      { word: "description", choices: ["描写・説明", "発見", "決定", "方向"], answer: 0 },
-      { word: "advantage", choices: ["利点・強み", "不便", "冒険", "平均"], answer: 0 },
-      { word: "disaster", choices: ["災害・惨事", "発見", "討論", "距離"], answer: 0 },
-      { word: "volunteering", choices: ["ボランティア活動", "価値", "理解", "投票"], answer: 0 }
-    ],
-    2: [
-      { word: "population", choices: ["人口", "汚染", "人気", "位置"], answer: 0 },
-      { word: "destination", choices: ["目的地", "決断", "デザイン", "距離"], answer: 0 },
-      { word: "atmosphere", choices: ["大気・雰囲気", "態度", "原子", "属性"], answer: 0 },
-      { word: "relationship", choices: ["関係・間柄", "宗教", "地域", "責任"], answer: 0 },
-      { word: "perspective", choices: ["視点・考え方", "所有", "許可", "目的"], answer: 0 },
-      { word: "communication", choices: ["意思疎通", "コミュニティ", "比較", "完成"], answer: 0 },
-      { word: "contribution", choices: ["貢献・寄付", "条件", "建設", "会話"], answer: 0 },
-      { word: "biodiversity", choices: ["生物の多様性", "伝記", "生化学", "境界"], answer: 0 },
-      { word: "sustainability", choices: ["持続可能性", "成功", "解決策", "支持"], answer: 0 },
-      { word: "international", choices: ["国際的な", "内部の", "知的な", "熱心な"], answer: 0 }
-    ],
-    3: [
-      { word: "achievement", choices: ["達成・実績", "受容", "事故", "行動"], answer: 0 },
-      { word: "announcement", choices: ["発表・告知", "案内", "許可", "配置"], answer: 0 },
-      { word: "architecture", choices: ["建築・構造", "芸術", "農業", "協定"], answer: 0 },
-      { word: "celebration", choices: ["お祝い・儀式", "選択", "収集", "比較"], answer: 0 },
-      { word: "competition", choices: ["競争・コンテスト", "完成", "条件", "混乱"], answer: 0 },
-      { word: "conservation", choices: ["（自然などの）保護", "会話", "接続", "検討"], answer: 0 },
-      { word: "development", choices: ["開発・発展", "出発", "要求", "発見"], answer: 0 },
-      { word: "electricity", choices: ["電気", "電子", "要素", "教育"], answer: 0 },
-      { word: "entertainment", choices: ["娯楽・催し物", "入場", "環境", "装備"], answer: 0 },
-      { word: "exploration", choices: ["探検・調査", "説明", "表現", "経験"], answer: 0 }
-    ]
-  };
-
-  for (let l = 4; l <= 10; l++) {
-    wordDatabase[l] = Array.from({length: 10}, (_, i) => ({
-      word: `難関単語 L${l}-${i+1}`,
-      choices: ["正解の意味", "誤り1", "誤り2", "誤り3"],
-      answer: 0
-    }));
-  }
-
-  // --- 全ユーザーのデータ（localStorage管理構造） ---
-  // allUsers = { "たろう": { unlockedLevel: 1, clearedLevels: [], history: {}, logs: [] }, ... }
-  let allUsers = {};
-  let currentUserName = "";
-
-  let currentLevel = 1;
-  let currentQuestions = [];
-  let currentIndex = 0;
-  let correctCount = 0;
-  let chartInstance = null;
-
-  window.onload = function() {
-    const savedAllData = localStorage.getItem("vocab_multi_users");
-    if (savedAllData) {
-      allUsers = JSON.parse(savedAllData);
+    for (let l = 4; l <= 10; l++) {
+      wordDatabase[l] = Array.from({length: 10}, (_, i) => ({
+        word: `難関単語 L${l}-${i+1}`,
+        choices: ["正解の意味", "誤り1", "誤り2", "誤り3"],
+        answer: 0
+      }));
     }
-    
-    // 最後に使っていたユーザーがいれば自動復元、いなければログイン画面
-    const lastUser = localStorage.getItem("vocab_last_user");
-    if (lastUser && allUsers[lastUser]) {
-      currentUserName = lastUser;
+
+    // --- 全ユーザーのデータ（localStorage管理構造） ---
+    let allUsers = {};
+    let currentUserName = "";
+
+    let currentLevel = 1;
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let correctCount = 0;
+    let chartInstance = null;
+
+    // タイマー管理用変数
+    let timerInterval = null;
+    let startTime = 0;
+    let currentDurationStr = "00:00";
+
+    window.onload = function() {
+      const savedAllData = localStorage.getItem("vocab_multi_users");
+      if (savedAllData) {
+        allUsers = JSON.parse(savedAllData);
+      }
+
+      const lastUser = localStorage.getItem("vocab_last_user");
+      if (lastUser && allUsers[lastUser]) {
+        currentUserName = lastUser;
+        showDashboard();
+      } else {
+        showLoginScreen();
+      }
+    };
+
+    function saveAllData() {
+      localStorage.setItem("vocab_multi_users", JSON.stringify(allUsers));
+      if (currentUserName) {
+        localStorage.setItem("vocab_last_user", currentUserName);
+      }
+    }
+
+    function switchScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    function showLoginScreen() {
+      const selectArea = document.getElementById("user-select-area");
+      const selectEl = document.getElementById("user-select");
+      const userNames = Object.keys(allUsers);
+
+      if (userNames.length > 0) {
+        selectArea.style.display = "block";
+        selectEl.innerHTML = userNames.map(name => `<option value="${name}">${name}</option>`).join("");
+      } else {
+        selectArea.style.display = "none";
+      }
+
+      switchScreen("screen-login");
+    }
+
+    function loginNewUser() {
+      const nameInput = document.getElementById("username").value.trim();
+      if (!nameInput) return alert("名前を入力してください");
+
+      if (!allUsers[nameInput]) {
+        allUsers[nameInput] = {
+          unlockedLevel: 1,
+          clearedLevels: [],
+          history: {},
+          logs: []
+        };
+      }
+      currentUserName = nameInput;
+      saveAllData();
       showDashboard();
-    } else {
+    }
+
+    function loginSelectedUser() {
+      const selectEl = document.getElementById("user-select");
+      currentUserName = selectEl.value;
+      saveAllData();
+      showDashboard();
+    }
+
+    function logout() {
+      currentUserName = "";
+      localStorage.removeItem("vocab_last_user");
       showLoginScreen();
     }
-  };
 
-  function saveAllData() {
-    localStorage.setItem("vocab_multi_users", JSON.stringify(allUsers));
-    if (currentUserName) {
-      localStorage.setItem("vocab_last_user", currentUserName);
-    }
-  }
+    function showDashboard() {
+      document.getElementById("display-name").innerText = currentUserName;
+      const userData = allUsers[currentUserName];
 
-  function switchScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
-  }
+      const grid = document.getElementById("level-grid");
+      grid.innerHTML = "";
 
-  function showLoginScreen() {
-    const selectArea = document.getElementById("user-select-area");
-    const selectEl = document.getElementById("user-select");
-    const userNames = Object.keys(allUsers);
+      for (let lvl = 1; lvl <= 10; lvl++) {
+        const isUnlocked = lvl <= userData.unlockedLevel;
+        const isCleared = userData.clearedLevels.includes(lvl);
 
-    if (userNames.length > 0) {
-      selectArea.style.display = "block";
-      selectEl.innerHTML = userNames.map(name => `<option value="${name}">${name}</option>`).join("");
-    } else {
-      selectArea.style.display = "none";
-    }
+        const card = document.createElement("div");
+        card.className = `level-card ${isCleared ? 'cleared' : (isUnlocked ? 'unlocked' : '')}`;
 
-    switchScreen("screen-login");
-  }
+        let statusText = "🔒 ロック中";
+        if (isCleared) statusText = "👑 クリア！";
+        else if (isUnlocked) statusText = "🔓 挑戦可能";
 
-  function loginNewUser() {
-    const nameInput = document.getElementById("username").value.trim();
-    if (!nameInput) return alert("名前を入力してください");
-
-    if (!allUsers[nameInput]) {
-      allUsers[nameInput] = {
-        unlockedLevel: 1,
-        clearedLevels: [],
-        history: {},
-        logs: []
-      };
-    }
-    currentUserName = nameInput;
-    saveAllData();
-    showDashboard();
-  }
-
-  function loginSelectedUser() {
-    const selectEl = document.getElementById("user-select");
-    currentUserName = selectEl.value;
-    saveAllData();
-    showDashboard();
-  }
-
-  function logout() {
-    currentUserName = "";
-    localStorage.removeItem("vocab_last_user");
-    showLoginScreen();
-  }
-
-  function showDashboard() {
-    document.getElementById("display-name").innerText = currentUserName;
-    const userData = allUsers[currentUserName];
-
-    const grid = document.getElementById("level-grid");
-    grid.innerHTML = "";
-    
-    for (let lvl = 1; lvl <= 10; lvl++) {
-      const isUnlocked = lvl <= userData.unlockedLevel;
-      const isCleared = userData.clearedLevels.includes(lvl);
-      
-      const card = document.createElement("div");
-      card.className = `level-card ${isCleared ? 'cleared' : (isUnlocked ? 'unlocked' : '')}`;
-      
-      let statusText = "🔒 ロック中";
-      if (isCleared) statusText = "👑 クリア！";
-      else if (isUnlocked) statusText = "🔓 挑戦可能";
-
-      card.innerHTML = `
-        <div style="font-weight: bold; font-size: 18px;">Level ${lvl}</div>
-        <div style="font-size: 12px; margin: 5px 0; color: #6B7280;">${statusText}</div>
-        <button onclick="startQuiz(${lvl})" ${isUnlocked ? "" : "disabled"}>
-          ${isCleared ? "再挑戦" : (isUnlocked ? "スタート" : "ロック")}
-        </button>
-      `;
-      grid.appendChild(card);
-    }
-
-    renderHistoryLog();
-    switchScreen("screen-dashboard");
-    renderChart();
-  }
-
-  function startQuiz(level) {
-    currentLevel = level;
-    currentQuestions = [...wordDatabase[level]].sort(() => Math.random() - 0.5);
-    currentIndex = 0;
-    correctCount = 0;
-
-    document.getElementById("quiz-level-title").innerText = `Level ${level}`;
-    switchScreen("screen-quiz");
-    showQuestion();
-  }
-
-  function showQuestion() {
-    const q = currentQuestions[currentIndex];
-    document.getElementById("current-index").innerText = currentIndex + 1;
-    document.getElementById("target-word").innerText = q.word;
-
-    const container = document.getElementById("choices-container");
-    container.innerHTML = "";
-
-    const shuffledChoices = q.choices.map((choice, idx) => ({ choice, isAnswer: idx === q.answer }))
-                                     .sort(() => Math.random() - 0.5);
-
-    shuffledChoices.forEach(item => {
-      const btn = document.createElement("button");
-      btn.className = "choice-btn";
-      btn.innerText = item.choice;
-      btn.onclick = () => selectChoice(item.isAnswer, btn);
-      container.appendChild(btn);
-    });
-  }
-
-  function selectChoice(isCorrect, btn) {
-    const btns = document.querySelectorAll(".choice-btn");
-    btns.forEach(b => b.disabled = true);
-
-    if (isCorrect) {
-      btn.classList.add("correct");
-      correctCount++;
-    } else {
-      btn.classList.add("wrong");
-    }
-
-    setTimeout(() => {
-      currentIndex++;
-      if (currentIndex < 10) {
-        showQuestion();
-      } else {
-        finishQuiz();
+        card.innerHTML = `
+          <div style="font-weight: bold; font-size: 18px;">Level ${lvl}</div>
+          <div style="font-size: 12px; margin: 5px 0; color: #6B7280;">${statusText}</div>
+          <button onclick="startQuiz(${lvl})" ${isUnlocked ? "" : "disabled"}>
+            ${isCleared ? "再挑戦" : (isUnlocked ? "スタート" : "ロック")}
+          </button>
+        `;
+        grid.appendChild(card);
       }
-    }, 800);
-  }
 
-  function finishQuiz() {
-    const accuracy = Math.round((correctCount / 10) * 100);
-    const userData = allUsers[currentUserName];
-
-    document.getElementById("score").innerText = correctCount;
-    document.getElementById("accuracy").innerText = accuracy;
-
-    const now = new Date();
-    const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    const todayKey = now.toISOString().split('T')[0];
-
-    userData.logs.unshift({
-      timestamp: timeStr,
-      level: currentLevel,
-      score: correctCount,
-      total: 10,
-      accuracy: accuracy
-    });
-
-    userData.history[todayKey] = accuracy;
-
-    const unlockMsg = document.getElementById("unlock-msg");
-    
-    if (accuracy === 100) {
-      if (!userData.clearedLevels.includes(currentLevel)) {
-        userData.clearedLevels.push(currentLevel);
-      }
-      if (currentLevel === userData.unlockedLevel && currentLevel < 10) {
-        userData.unlockedLevel = currentLevel + 1;
-        unlockMsg.innerHTML = `<span style="color: var(--success-color);">🎉 全問正解！<br>Level ${currentLevel + 1} が解放されました！</span>`;
-      } else if (currentLevel === 10) {
-        unlockMsg.innerHTML = `<span style="color: var(--success-color);">🏆 100問完全制覇！おめでとうございます！</span>`;
-      } else {
-        unlockMsg.innerHTML = `<span style="color: var(--success-color);">🎉 全問正解クリア！</span>`;
-      }
-    } else {
-      unlockMsg.innerHTML = `<span style="color: var(--danger-color);">全問正解で次のレベルが解放されます！<br>（あと ${10 - correctCount} 問）</span>`;
+      renderHistoryLog();
+      switchScreen("screen-dashboard");
+      renderChart();
     }
 
-    saveAllData();
-    switchScreen("screen-result");
-  }
+    function startQuiz(level) {
+      currentLevel = level;
+      currentQuestions = [...wordDatabase[level]].sort(() => Math.random() - 0.5);
+      currentIndex = 0;
+      correctCount = 0;
 
-  function renderHistoryLog() {
-    const tbody = document.getElementById("history-log-body");
-    tbody.innerHTML = "";
-    const userData = allUsers[currentUserName];
+      // タイマーの初期化と開始
+      if (timerInterval) clearInterval(timerInterval);
+      startTime = Date.now();
+      currentDurationStr = "00:00";
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
 
-    if (!userData.logs || userData.logs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" style="color: #9CA3AF;">まだ挑戦記録がありません</td></tr>`;
-      return;
+      document.getElementById("quiz-level-title").innerText = `Level ${level}`;
+      switchScreen("screen-quiz");
+      showQuestion();
     }
 
-    userData.logs.forEach(log => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${log.timestamp}</td>
-        <td>Level ${log.level}</td>
-        <td>${log.score} / ${log.total}</td>
-        <td style="font-weight: bold; color: ${log.accuracy === 100 ? 'var(--success-color)' : 'var(--text-color)'};">
-          ${log.accuracy}%
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
+    function updateTimer() {
+      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      const minutes = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+      const seconds = String(elapsedSeconds % 60).padStart(2, '0');
+      currentDurationStr = `${minutes}:${seconds}`;
+      const timerEl = document.getElementById("quiz-timer");
+      if (timerEl) {
+        timerEl.innerText = currentDurationStr;
+      }
+    }
 
-  function renderChart() {
-    const ctx = document.getElementById('progressChart').getContext('2d');
-    const userData = allUsers[currentUserName];
-    const dates = Object.keys(userData.history).sort();
-    const accuracies = dates.map(d => userData.history[d]);
+    function showQuestion() {
+      const q = currentQuestions[currentIndex];
+      document.getElementById("current-index").innerText = currentIndex + 1;
+      document.getElementById("target-word").innerText = q.word;
 
-    if (chartInstance) chartInstance.destroy();
+      const container = document.getElementById("choices-container");
+      container.innerHTML = "";
 
-    chartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: dates,
-        datasets: [{
-          label: '日々の正解率 (%)',
-          data: accuracies,
-          borderColor: '#3B82F6',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          fill: true,
-          tension: 0.3
-        }]
-      },
-      options: {
-        scales: {
-          y: { min: 0, max: 100 }
+      const shuffledChoices = q.choices.map((choice, idx) => ({ choice, isAnswer: idx === q.answer }))
+                                       .sort(() => Math.random() - 0.5);
+
+      shuffledChoices.forEach(item => {
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.innerText = item.choice;
+        btn.dataset.isAnswer = item.isAnswer;
+        btn.onclick = () => selectChoice(item.isAnswer, btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectChoice(isCorrect, btn) {
+      const btns = document.querySelectorAll(".choice-btn");
+
+      // 全ボタンを無効化し、正解の選択肢を緑色で強調表示
+      btns.forEach(b => {
+        b.disabled = true;
+        if (b.dataset.isAnswer === "true") {
+          b.classList.add("correct");
         }
+      });
+
+      if (isCorrect) {
+        correctCount++;
+      } else {
+        // 不正解の場合は選んだボタンを赤色で強調表示
+        btn.classList.add("wrong");
       }
-    });
-  }
-</script>
+
+      // 正解・不正解を視認できるよう1.2秒待機して次へ進行
+      setTimeout(() => {
+        currentIndex++;
+        if (currentIndex < 10) {
+          showQuestion();
+        } else {
+          finishQuiz();
+        }
+      }, 1200);
+    }
+
+    function finishQuiz() {
+      // タイマー停止と最終タイム確定
+      if (timerInterval) clearInterval(timerInterval);
+      updateTimer();
+
+      const accuracy = Math.round((correctCount / 10) * 100);
+      const userData = allUsers[currentUserName];
+
+      document.getElementById("score").innerText = correctCount;
+      document.getElementById("accuracy").innerText = accuracy;
+      document.getElementById("result-time").innerText = currentDurationStr;
+
+      const now = new Date();
+      const timeStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const todayKey = now.toISOString().split('T');
+
+      // ログに所要時間 (duration) を追加して記録
+      userData.logs.unshift({
+        timestamp: timeStr,
+        level: currentLevel,
+        score: correctCount,
+        total: 10,
+        accuracy: accuracy,
+        duration: currentDurationStr
+      });
+
+      userData.history[todayKey] = accuracy;
+
+      const unlockMsg = document.getElementById("unlock-msg");
+      if (accuracy === 100) {
+        if (!userData.clearedLevels.includes(currentLevel)) {
+          userData.clearedLevels.push(currentLevel);
+        }
+        if (currentLevel === userData.unlockedLevel && currentLevel < 10) {
+          userData.unlockedLevel = currentLevel + 1;
+          unlockMsg.innerHTML = `<span style="color: var(--success-color);">🎉 全問正解！<br>Level ${currentLevel + 1} が解放されました！</span>`;
+        } else if (currentLevel === 10) {
+          unlockMsg.innerHTML = `<span style="color: var(--success-color);">🏆 100問完全制覇！おめでとうございます！</span>`;
+        } else {
+          unlockMsg.innerHTML = `<span style="color: var(--success-color);">🎉 全問正解クリア！</span>`;
+        }
+      } else {
+        unlockMsg.innerHTML = `<span style="color: var(--danger-color);">全問正解で次のレベルが解放されます！<br>（あと ${10 - correctCount} 問）</span>`;
+      }
+
+      saveAllData();
+      switchScreen("screen-result");
+    }
+
+    function renderHistoryLog() {
+      const tbody = document.getElementById("history-log-body");
+      tbody.innerHTML = "";
+      const userData = allUsers[currentUserName];
+
+      if (!userData.logs || userData.logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="color: #9CA3AF;">まだ挑戦記録がありません</td></tr>`;
+        return;
+      }
+
+      userData.logs.forEach(log => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${log.timestamp}</td>
+          <td>Level ${log.level}</td>
+          <td>${log.score} / ${log.total}</td>
+          <td style="font-weight: bold; color: ${log.accuracy === 100 ? 'var(--success-color)' : 'var(--text-color)'};">
+            ${log.accuracy}%
+          </td>
+          <td>${log.duration || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderChart() {
+      const ctx = document.getElementById('progressChart').getContext('2d');
+      const userData = allUsers[currentUserName];
+      const dates = Object.keys(userData.history).sort();
+      const accuracies = dates.map(d => userData.history[d]);
+
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: '日々の正解率 (%)',
+            data: accuracies,
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          scales: {
+            y: { min: 0, max: 100 }
+          }
+        }
+      });
+    }
+  </script>
 </body>
 </html>
+```
